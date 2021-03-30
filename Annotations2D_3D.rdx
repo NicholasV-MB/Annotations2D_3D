@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PROCESS Id="RDK:0001" Name="Annotations2D_3D" HomePage="RDTemplateClean.htm" Expanded="True" Bookmarked="True">
+	<PROCESSPROPERTY CrUser="ruled [SRV-PLMTEST]" CrDate="2021-03-23T08:56:29" ModUser="nicholas.vittor [LAPT-IT07]" ModDate="2021-03-30T09:28:00" LanguageVersion="2011.1.1.0" />
+	<GROUP Id="RDK:0002" Name="Declarations" SubType="Declarations" Expanded="True">
+		<GROUP Id="RDK:0003" Name="Types" SubType="TypeSet" IncludeDate="0" Expanded="True">
+			<TYPE Id="RDK:2055" Name="AnnotationType" Expanded="True" SubType="structure" HasArrayType="True">
+				<TYPE_VALUES />
+				<FIELD Id="RDK:2350" Name="Treno" Type="string" />
+				<FIELD Id="RDK:5881" Name="Campata" Type="integer" />
+				<FIELD Id="RDK:5885" Name="ID" Type="integer" />
+				<FIELD Id="RDK:5887" Name="Livello" Type="string" />
+				<FIELD Id="RDK:5889" Name="Posizione" Type="string" />
+				<FIELD Id="RDK:5891" Name="Intervento" Type="string" />
+				<FIELD Id="RDK:5893" Name="Nota" Type="string" />
+				<FIELD Id="RDK:6245" Name="Foto" Type="string" />
+			</TYPE>
+			<TYPE Id="RDK:7512" Name="Annotations2D_3DType" Expanded="True" SubType="structure">
+				<TYPE_VALUES />
+				<FIELD Id="RDK:7513" Name="LayoutData" Type="string" />
+				<FIELD Id="RDK:7514" Name="Annotations" Type="string" />
+				<FIELD Id="RDK:7564" Name="HPiano" Type="integer" />
+				<FIELD Id="RDK:7562" Name="LPiano" Type="integer" />
+			</TYPE>
+		</GROUP>
+		<GROUP Id="RDK:0004" Name="Parameters" SubType="ParameterDefs" Expanded="True" />
+		<GROUP Id="RDK:0005" Name="Global Variables" SubType="VarSet" IncludeDate="0" Expanded="True">
+			<VAR Id="RDK:5934" Name="Annotations2D_3D_Data" Type="Annotations2D_3DType" Expanded="True" />
+			<VAR Id="RDK:6638" Name="data_to_print" Type="string" Expanded="True" />
+		</GROUP>
+		<GROUP Id="RDK:0006" Name="Profiles" SubType="ProfileSet" Expanded="True">
+			<PROFILE Id="RDK:7516" Name="Annotations2D_3DProfile" TypeName="Annotations2D_3DType" Expanded="True" />
+		</GROUP>
+		<GROUP Id="RDK:0007" Name="Functions" SubType="FunctionSet" IncludeDate="0" Expanded="True" />
+	</GROUP>
+	<GROUP Id="RDK:0008" Name="Main Group" SubType="Generic" Expanded="True">
+		<ACTION_CALL Id="RDK:7441" Name="RDEngineering_CopyFile" DesignTimeRemark="{Source File} --&gt; {Destination File}">
+			<PAR Name="RDLibraryName">
+				<EXP><![CDATA[$C$RDEngineering_MISC]]></EXP>
+			</PAR>
+			<PAR Name="FileName">
+				<EXP><![CDATA[$=$ProcPath() + "Templates\Annotations2D_3D.htm"]]></EXP>
+			</PAR>
+			<PAR Name="NewFileName">
+				<EXP><![CDATA[$=$WebTemplatesPath() + "Annotations2D_3D.htm"]]></EXP>
+			</PAR>
+			<PAR Name="AcceptWildcards" />
+			<PAR Name="Overwrite">
+				<EXP><![CDATA[$C$True]]></EXP>
+			</PAR>
+			<PAR Name="Options">
+				<EXP><![CDATA[$C$(NEWERFILESONLY)]]></EXP>
+			</PAR>
+		</ACTION_CALL>
+		<ACTION_CALL Id="RDK:7444" Name="RDEngineering_CopyFolder" DesignTimeRemark="{SourcePath} --&gt; {TargetPath}">
+			<PAR Name="RDLibraryName">
+				<EXP><![CDATA[$C$RDEngineering_MISC]]></EXP>
+			</PAR>
+			<PAR Name="SourcePath">
+				<EXP><![CDATA[$=$ProcPath() + "Templates\lib"]]></EXP>
+			</PAR>
+			<PAR Name="TargetPath">
+				<EXP><![CDATA[$=$WebTemplatesPath() + "lib"]]></EXP>
+			</PAR>
+			<PAR Name="Recursive" />
+		</ACTION_CALL>
+		<SET_STRUCT Id="RDK:6539" VarRef="Annotations2D_3D_Data" ClearAll="True">
+			<PAR Name="LayoutData">
+				<EXP><![CDATA[$=$ReadTextFile("layout.json")]]></EXP>
+			</PAR>
+			<PAR Name="Annotations">
+				<EXP><![CDATA[$=$ReadTextFile("annotations.json")]]></EXP>
+			</PAR>
+			<PAR Name="HPiano">
+				<EXP><![CDATA[$C$150000]]></EXP>
+			</PAR>
+			<PAR Name="LPiano">
+				<EXP><![CDATA[$C$150000]]></EXP>
+			</PAR>
+		</SET_STRUCT>
+		<ACTION_CALL Id="RDK:12" Name="RDEngineering_RemoteWebForm" DesignTimeRemark="{template File}">
+			<PAR Name="RDLibraryName">
+				<EXP><![CDATA[$C$RDEngineering_UI]]></EXP>
+			</PAR>
+			<PAR Name="InputVar">
+				<EXP><![CDATA[$=$Annotations2D_3D_Data]]></EXP>
+			</PAR>
+			<PAR Name="ProfileName">
+				<EXP><![CDATA[$C$Annotations2D_3DProfile]]></EXP>
+			</PAR>
+			<PAR Name="TemplateFile">
+				<EXP><![CDATA[$C$Templates/Annotations2D_3D.htm]]></EXP>
+			</PAR>
+			<PAR Name="RunTimeRemark" />
+			<PAR Name="WebResourcePath" />
+			<PAR Name="ImgTop" />
+			<PAR Name="ImgBottom" />
+			<PAR Name="ImgLeft" />
+			<PAR Name="ImgRight" />
+			<PAR Name="CSSStyle" />
+			<PAR Name="RDActionTimeOut" />
+			<PAR Name="ButtonsMode">
+				<EXP><![CDATA[$C$16]]></EXP>
+			</PAR>
+			<PAR Name="ButtonList" />
+			<PAR Name="ButtonImgs" />
+			<PAR Name="ButtonAction" />
+			<PAR Name="ButtonOptions" />
+			<PAR Name="ButtonDefs" />
+			<PAR Name="ButtonPressed">
+				<EXP><![CDATA[$V$]]></EXP>
+			</PAR>
+			<PAR Name="TemplateConfig" />
+			<PAR Name="HeaderData" />
+			<PAR Name="InputTree">
+				<EXP><![CDATA[$=$]]></EXP>
+			</PAR>
+			<PAR Name="Options">
+				<EXP><![CDATA[$C$(TOPBUTTONS)]]></EXP>
+			</PAR>
+		</ACTION_CALL>
+		<SET Id="RDK:7074" VarRef="data_to_print">
+			<EXP><![CDATA[$=$ToJSON(Annotations2D_3D_Data.Annotations)]]></EXP>
+			<PAR Name="AdvancedOptions" />
+		</SET>
+		<ACTION_CALL Id="RDK:7075" Name="RDEngineering_AppendTextLine">
+			<PAR Name="RDLibraryName">
+				<EXP><![CDATA[$C$RDEngineering_FILE_TEXT]]></EXP>
+			</PAR>
+			<PAR Name="FileName">
+				<EXP><![CDATA[$C$Risultato/Info.txt]]></EXP>
+			</PAR>
+			<PAR Name="TextLine">
+				<EXP><![CDATA[$=$data_to_print]]></EXP>
+			</PAR>
+			<PAR Name="Options" />
+		</ACTION_CALL>
+		<GROUP Id="RDK:6008" Name="FINE" SubType="Generic" Expanded="True" />
+	</GROUP>
+	<EXTERNAL_DATA>
+		<PROFILES_DATA>
+			<RELPROFILE Id="RDK:7517" TypeName="Annotations2D_3DType" Expanded="True">
+				<PNODE NodeType="profile" ProfileName="Annotations2D_3DProfile" />
+				<PNODE NodeType="field_variant" FieldName="LayoutData" VariantName="Variant" />
+				<RP_INITIAL_VALUE />
+				<RP_SETFIELD_VALUE />
+				<RP_SETFIELD_FORCED />
+				<RP_SETOPTIONS />
+				<UI_INPUT_TYPE TypeForm="Text" />
+				<UI_INPUT_VALIDATION ValidationType="none" />
+				<UI_INPUT_SUPPORT />
+			</RELPROFILE>
+			<RELPROFILE Id="RDK:7518" TypeName="Annotations2D_3DType" Expanded="True">
+				<PNODE NodeType="profile" ProfileName="Annotations2D_3DProfile" />
+				<PNODE NodeType="field_variant" FieldName="Annotations" VariantName="Variant" />
+				<RP_INITIAL_VALUE />
+				<RP_SETFIELD_VALUE />
+				<RP_SETFIELD_FORCED />
+				<RP_SETOPTIONS />
+				<UI_INPUT_TYPE TypeForm="Text" />
+				<UI_INPUT_VALIDATION ValidationType="none" />
+				<UI_INPUT_SUPPORT />
+			</RELPROFILE>
+			<RELPROFILE Id="RDK:7557" TypeName="Annotations2D_3DType" Expanded="True">
+				<PNODE NodeType="profile" ProfileName="Annotations2D_3DProfile" />
+				<PNODE NodeType="field_variant" FieldName="HPiano" VariantName="Variant" />
+				<RP_INITIAL_VALUE />
+				<RP_SETFIELD_VALUE />
+				<RP_SETFIELD_FORCED />
+				<RP_SETOPTIONS />
+				<UI_INPUT_TYPE TypeForm="Text" />
+				<UI_INPUT_VALIDATION ValidationType="none" />
+				<UI_INPUT_SUPPORT />
+			</RELPROFILE>
+			<RELPROFILE Id="RDK:7560" TypeName="Annotations2D_3DType" Expanded="True">
+				<PNODE NodeType="profile" ProfileName="Annotations2D_3DProfile" />
+				<PNODE NodeType="field_variant" FieldName="LPiano" VariantName="Variant" />
+				<RP_INITIAL_VALUE />
+				<RP_SETFIELD_VALUE />
+				<RP_SETFIELD_FORCED />
+				<RP_SETOPTIONS />
+				<UI_INPUT_TYPE TypeForm="Text" />
+				<UI_INPUT_VALIDATION ValidationType="none" />
+				<UI_INPUT_SUPPORT />
+			</RELPROFILE>
+		</PROFILES_DATA>
+		<BOM_DATA />
+	</EXTERNAL_DATA>
+</PROCESS>

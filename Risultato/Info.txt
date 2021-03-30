@@ -1,0 +1,55 @@
+[
+	{
+		"Treno": "A",
+		"Campata": "1",
+		"Oggetto": "Corrente-Front-5",
+		"ID": 1,
+		"Livello": "Verde",
+		"Posizione": {
+			"x": 22447.469448749645,
+			"y": 5033.491223800559,
+			"z": 25600 },
+		"Intervento": "Monitorare",
+		"Nota": "Fare attenzione",
+		"Foto": "1"
+	},{
+		"Treno": "B",
+		"Campata":"2", 
+		"Oggetto": "Corrente-Back-1",
+		"ID": 1,
+		"Livello": "Rosso",
+		"Posizione": {
+			"x": 32292.24425107696,
+			"y": 994.1832071175386,
+			"z": 49350 },
+		"Intervento": "Sostiuire",
+		"Nota": "Scaricare e sostituire causa urto",
+		"Foto": "2"
+	},{
+		"Treno":"C",
+		"Campata": "4",
+		"Oggetto": "Spalla-3",
+		"ID": 1,
+		"Livello": "Ocra",
+		"Posizione": {
+			"x": 49988.03693004142,
+			"y":2670.4035191467187,
+			"z":75700 },
+		"Intervento": "Sostiuire",
+		"Nota": "",
+		"Foto": "3"
+	},{
+		"Treno":"C",
+		"Campata":"4",
+		"Oggetto": "TraversinoDiagonale-Sx-3",
+		"ID": 2,
+		"Livello": "Verde",
+		"Posizione": {
+			"x": 40012.49060143184,
+			"y":2412.055897460843,
+			"z":75150.00522258843 },
+		"Intervento": "Altro",
+		"Nota":"Correggere",
+		"Foto":"4"
+	}
+]
