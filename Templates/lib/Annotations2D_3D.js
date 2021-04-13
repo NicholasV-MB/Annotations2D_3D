@@ -1,10 +1,10 @@
 function mainAnnotations2D_3D(){
 	// Assegnazione variabili
 	// Input da/verso processo
-	var input_LayoutData = document.getElementById("RDVAR_LayoutData");
+	var input_TreniData = document.getElementById("RDVAR_TreniData");
 	var input_Annotations = document.getElementById("RDVAR_Annotations");
-	var input_HPiano = document.getElementById("RDVAR_HPiano");
-	var input_LPiano = document.getElementById("RDVAR_LPiano");
+	var input_AltezzaPiano = document.getElementById("RDVAR_AltezzaPiano");
+	var input_LunghezzaPiano = document.getElementById("RDVAR_LunghezzaPiano");
 	// Variabili Editor Annotazioni
 	var Canvas3D = document.getElementById("Canvas3D");
 	Canvas3D.innerWidth = 0.4*window.innerWidth;
@@ -17,8 +17,8 @@ function mainAnnotations2D_3D(){
 	GUICanvas.innerHeight = window.innerHeight;
 	var scene2D, camera2D, renderer2D, controls2D, stats2D;
 	var floor, gui;
-	var height = parseInt(input_HPiano.value);
-	var width = parseInt(input_LPiano.value);
+	var height = parseInt(input_AltezzaPiano.value);
+	var width = parseInt(input_LunghezzaPiano.value);
 	var campata_selected, train_selected;
 	var all_campate = [];
 	var all_trains = [];
@@ -167,24 +167,27 @@ function mainAnnotations2D_3D(){
 		} 
 	}
 	
-	// Funzione che rigenera la scena dal valore di "input_LayoutData"
+	// Funzione che rigenera la scena dal valore di "input_TreniData"
 	function restoreScene(){
-		if (input_LayoutData.value.length>0){
-			var str_val = input_LayoutData.value;
-			var json_data = JSON.parse(str_val);
-			var trains_data =  json_data.UserData;
+		if (input_TreniData.value.length>0){
+			var str_val = input_TreniData.value;
+			var trains_data =  JSON.parse(str_val);
 			trains_data.forEach(t_data =>{
 				var id = t_data.userData.id;
 				var start_p = t_data.userData.start_p;
 				var lunghezza = t_data.userData.Lunghezza;
-				var profondita = t_data.userData.profondita;
+				var profondita = t_data.userData.Profondita;
 				var altezza = t_data.userData.Altezza;
 				var campate = t_data.userData.Campate;
-				var doppiaspalla = t_data.userData.doppiaspalla;
+				var doppiaspalla = t_data.userData.DoppiaSpalla;
 				var showNames = t_data.userData.showNames;
 				var livellixCampata = t_data.userData.Livelli;
 				var rotazione = t_data.userData.Rotazione;
-				draw2Dtrain( id, start_p, lunghezza, profondita, altezza, campate, doppiaspalla, showNames, livellixCampata);
+				var campate_data = [];
+				t_data.children.forEach(c=>{
+					campate_data.push(c.userData);
+				});
+				draw2Dtrain( id, start_p, lunghezza, profondita, altezza, campate, doppiaspalla, showNames, livellixCampata, campate_data);
 				scene2D.children.forEach(c=>{
 					if(c.name==train_name+"-"+id){
 						train_selected = c;
@@ -237,42 +240,51 @@ function mainAnnotations2D_3D(){
 
 	
 	// Disegna singolo treno in 2D
-	function draw2Dtrain(id_train, start_p, lunghezza, profondita, altezza, campate, doppiaspalla, showNames, livelli){
+	function draw2Dtrain(id_train, start_p, lunghezza, profondita, altezza, campate, doppiaspalla, showNames, livelli, campate_data){
 		var dist_doppia_spalla = 100;
 		var train_points = [];
-		train_points.push(start_p);
-		var interval = lunghezza/campate;
-		var campate_treno = []; 
-		for (var c = 1; c<=campate; c++){
-			var p1 = new THREE.Vector3(start_p.x+(interval*c), altezza, start_p.z);
-			var p2 = new THREE.Vector3(start_p.x+(interval*c), altezza, start_p.z+profondita);
-			if (doppiaspalla && c<campate){
-				var min = new THREE.Vector3(p1.x-interval, altezza, p1.z);
-				p1.x -= dist_doppia_spalla;
-				p2.x -= dist_doppia_spalla;
-				var max = new THREE.Vector3(p2.x, p2.y, p2.z);
-				train_points.push(new THREE.Vector3(p1.x, p1.y, p1.z));
-				train_points.push(new THREE.Vector3(p2.x, p2.y, p2.z));
-				p2.x += (2*dist_doppia_spalla);
-				train_points.push(new THREE.Vector3(p2.x, p2.y, p2.z));
-				p1.x += (2*dist_doppia_spalla);
-				train_points.push(new THREE.Vector3(p1.x, p1.y, p1.z));
-				p1.x -= (2*dist_doppia_spalla);
-				train_points.push(new THREE.Vector3(p1.x, p1.y, p1.z));
-			} else {
-				var min = new THREE.Vector3(p1.x-interval, altezza, p1.z);
-				var max = p2;
-				train_points.push(p1);
-				train_points.push(p2);
-				train_points.push(p1);
+		var campate_treno = [];
+		var id_c = 1;
+		for (_data of campate_data){
+			var lung_c = _data["Lunghezza"];
+			var prof_c = _data["Profondita"];
+			var _start_p = new THREE.Vector3(_data["start_p"].x, altezza, _data["start_p"].z);
+			if (doppiaspalla){
+				var p1 = new THREE.Vector3(_start_p.x, altezza, _start_p.z);
+				var p2 = new THREE.Vector3(p1.x+lung_c, altezza, p1.z);
+				if (id_c>1){
+					p1.x += (dist_doppia_spalla/2);
+				}
+				var p3 = new THREE.Vector3(p2.x, altezza, p2.z+prof_c);
+				var p4 = new THREE.Vector3(p1.x, altezza, p3.z);
+				
+				if(id_c<campate_data.length){
+					p2.x -= (dist_doppia_spalla/2);
+					p3.x -= (dist_doppia_spalla/2);
+					train_points.push(p1, p2, p3, p4, p1);
+					var p5 = new THREE.Vector3(p2.x+dist_doppia_spalla, altezza, p2.z);
+					var p6 = new THREE.Vector3(p5.x, altezza, p3.z);
+					train_points.push(p5, p6, p3, p2);
+				} else {
+					train_points.push(p1, p2, p3, p4, p1);
+				}
+				
 			}
-			if (doppiaspalla && c>1){ min.x += dist_doppia_spalla; } 
+			else{
+				var p1 = _start_p;
+				var p2 = new THREE.Vector3(p1.x+lung_c, altezza, p1.z);
+				var p3 = new THREE.Vector3(p2.x, altezza, p2.z+prof_c);
+				var p4 = new THREE.Vector3(p1.x, altezza, p3.z);
+				train_points.push(p1, p2, p3, p4, p1);
+			}
+			var min = p1;
+			var max = p3;
 			var box3 = new THREE.Box3(
 				min,
 				max
 			);
 			var box = new THREE.OBB().fromBox3(box3);
-			var c_name = id_train+"-"+c;
+			var c_name = id_train+"-"+id_c;
 			var center = box.center;
 			var campata = new THREE.Object3D();
 			campata.position.set(center.x, center.y, center.z);
@@ -281,12 +293,29 @@ function mainAnnotations2D_3D(){
 			var sprite = createSprite(c_name);
 			sprite.visible = showNames; 
 			campata.add(sprite);
+			if (Array.isArray(_data["AltezzeLivelli"])){
+				var al_sorted = _data["AltezzeLivelli"].sort(function(a, b){return a - b});
+				var AltezzeLivelli = {};
+				var idx = 1;
+				for (var el of al_sorted){
+					AltezzeLivelli[idx.toString()] = el;
+					idx += 1;
+				}		
+			} else {
+				var AltezzeLivelli = _data["AltezzeLivelli"];
+			}
+			var u_d = {
+				"start_p": _start_p,
+				"Altezza": _data["Altezza"],
+				"Profondita": prof_c,
+				"Lunghezza": lung_c,
+				"Livelli": _data["Livelli"],
+				"AltezzeLivelli": AltezzeLivelli
+			}
+			campata.userData = u_d;
 			campate_treno.push(campata);
-		}			
-		var end_p = new THREE.Vector3(lunghezza+start_p.x, altezza,  start_p.z+profondita);
-		train_points.push(end_p);
-		var p = new THREE.Vector3(start_p.x, altezza, start_p.z+profondita);
-		train_points.push(p, start_p);
+			id_c += 1;
+		}
 		var train_geom = new THREE.BufferGeometry().setFromPoints(train_points);
 		var train_mesh = new THREE.Line( train_geom, point_material);
 		train_mesh.name = train_name+"-"+id_train;
@@ -294,12 +323,12 @@ function mainAnnotations2D_3D(){
 		campate_treno.forEach(camp => train_mesh.add(camp));
 		var u_data = {
 			id: id_train,
-			start_p: start_p,
+			start_p: new THREE.Vector3(start_p.x, start_p.y, start_p.z),
 			Lunghezza: lunghezza,
 			profondita: profondita,
 			Altezza: altezza,
 			Campate: campate,
-			doppiaspalla: doppiaspalla,
+			DoppiaSpalla: doppiaspalla,
 			showNames: showNames,
 			Livelli: livelli,
 			Rotazione: 0
@@ -708,11 +737,11 @@ function mainAnnotations2D_3D(){
 						"Oggetto": nome_oggetto.split("-").slice(2).join("-"),
 						"ID": ann.id,
 						"Livello": ann.Livello,
-						"Posizione": JSON.stringify({
-							"x": ann.posizione.x,
-							"y": ann.posizione.y,
-							"z": ann.posizione.z,
-						}),
+						"Posizione": {
+							"x": Math.round(ann.posizione.x),
+							"y": Math.round(ann.posizione.y),
+							"z": Math.round(ann.posizione.z),
+						},
 						"Intervento": ann.Intervento,
 						"Nota": ann.Nota,
 						"Foto": ann.Foto,

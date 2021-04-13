@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PROCESS Id="RDK:0001" Name="Annotations2D_3D" HomePage="RDTemplateClean.htm" Expanded="True" Bookmarked="True">
-	<PROCESSPROPERTY CrUser="ruled [SRV-PLMTEST]" CrDate="2021-03-23T08:56:29" ModUser="nicholas.vittor [LAPT-IT07]" ModDate="2021-03-30T09:28:00" LanguageVersion="2011.1.1.0" />
+	<PROCESSPROPERTY CrUser="ruled [SRV-PLMTEST]" CrDate="2021-03-23T08:56:29" ModUser="nicholas.vittor [LAPT-IT07]" ModDate="2021-04-13T11:10:40" LanguageVersion="2011.1.1.0" />
 	<GROUP Id="RDK:0002" Name="Declarations" SubType="Declarations" Expanded="True">
 		<GROUP Id="RDK:0003" Name="Types" SubType="TypeSet" IncludeDate="0" Expanded="True">
 			<TYPE Id="RDK:2055" Name="AnnotationType" Expanded="True" SubType="structure" HasArrayType="True">
@@ -9,23 +9,92 @@
 				<FIELD Id="RDK:5881" Name="Campata" Type="integer" />
 				<FIELD Id="RDK:5885" Name="ID" Type="integer" />
 				<FIELD Id="RDK:5887" Name="Livello" Type="string" />
-				<FIELD Id="RDK:5889" Name="Posizione" Type="string" />
+				<FIELD Id="RDK:9043" Name="Oggetto" Type="string" />
+				<FIELD Id="RDK:9042" Name="Posizione" Type="PointType" />
 				<FIELD Id="RDK:5891" Name="Intervento" Type="string" />
 				<FIELD Id="RDK:5893" Name="Nota" Type="string" />
 				<FIELD Id="RDK:6245" Name="Foto" Type="string" />
 			</TYPE>
 			<TYPE Id="RDK:7512" Name="Annotations2D_3DType" Expanded="True" SubType="structure">
 				<TYPE_VALUES />
-				<FIELD Id="RDK:7513" Name="LayoutData" Type="string" />
+				<FIELD Id="RDK:7513" Name="TreniData" Type="string" />
 				<FIELD Id="RDK:7514" Name="Annotations" Type="string" />
-				<FIELD Id="RDK:7564" Name="HPiano" Type="integer" />
-				<FIELD Id="RDK:7562" Name="LPiano" Type="integer" />
+				<FIELD Id="RDK:7564" Name="AltezzaPiano" Type="integer" />
+				<FIELD Id="RDK:7562" Name="LunghezzaPiano" Type="integer" />
 			</TYPE>
+			<GROUP Id="RDK:7664" Name="SmartEditor2D" SubType="TypeSet" IncludeDate="0" Expanded="True">
+				<TYPE Id="RDK:7622" Name="KeyValueType" SubType="structure" HasArrayType="True">
+					<TYPE_VALUES />
+					<FIELD Id="RDK:7620" Name="key" Type="integer" />
+					<FIELD Id="RDK:7621" Name="value" Type="double" />
+				</TYPE>
+				<TYPE Id="RDK:7625" Name="CampataType" SubType="structure" HasArrayType="True">
+					<TYPE_VALUES />
+					<FIELD Id="RDK:7623" Name="name" Type="string" />
+					<FIELD Id="RDK:7624" Name="userData" Type="CampataUserDataType" />
+				</TYPE>
+				<TYPE Id="RDK:7636" Name="TrenoUserDataType" SubType="structure">
+					<TYPE_VALUES />
+					<FIELD Id="RDK:7626" Name="id" Type="string" />
+					<FIELD Id="RDK:7627" Name="start_p" Type="PointType" />
+					<FIELD Id="RDK:7628" Name="Lunghezza" Type="integer" />
+					<FIELD Id="RDK:7629" Name="Profondita" Type="integer" />
+					<FIELD Id="RDK:7630" Name="Altezza" Type="integer" />
+					<FIELD Id="RDK:7631" Name="Campate" Type="integer" />
+					<FIELD Id="RDK:7632" Name="DoppiaSpalla" Type="boolean" />
+					<FIELD Id="RDK:7633" Name="ShowNames" Type="boolean" />
+					<FIELD Id="RDK:7634" Name="Livelli" Type="integer" />
+					<FIELD Id="RDK:7635" Name="Rotazione" Type="integer" />
+				</TYPE>
+				<TYPE Id="RDK:7641" Name="TrenoType" SubType="structure" HasArrayType="True">
+					<TYPE_VALUES />
+					<FIELD Id="RDK:7637" Name="name" Type="string" />
+					<FIELD Id="RDK:7638" Name="userData" Type="TrenoUserDataType" />
+					<FIELD Id="RDK:7639" Name="geometry" Type="KeyValueType[]" />
+					<FIELD Id="RDK:7640" Name="children" Type="CampataType[]" />
+				</TYPE>
+				<TYPE Id="RDK:7652" Name="SmartEditor2DType" SubType="structure" HasArrayType="True">
+					<TYPE_VALUES />
+					<FIELD Id="RDK:7642" Name="NumeroTreni" Type="integer" />
+					<FIELD Id="RDK:7643" Name="LunghezzaTreni" Type="integer" />
+					<FIELD Id="RDK:7644" Name="ProfonditaTreni" Type="integer" />
+					<FIELD Id="RDK:7645" Name="HSpalle" Type="integer" />
+					<FIELD Id="RDK:7646" Name="NumLivCampata" Type="integer" />
+					<FIELD Id="RDK:7647" Name="CampatePerTreno" Type="integer" />
+					<FIELD Id="RDK:7648" Name="SpallaDoppia" Type="boolean" />
+					<FIELD Id="RDK:7649" Name="UserData" Type="string" DesignTimeRemark="JSON in uscita: lista treni con le singole annotazioni" />
+					<FIELD Id="RDK:7650" Name="HPiano" Type="integer" />
+					<FIELD Id="RDK:7651" Name="LPiano" Type="integer" />
+				</TYPE>
+				<TYPE Id="RDK:7656" Name="LayoutSmart" SubType="structure" HasArrayType="True">
+					<TYPE_VALUES />
+					<FIELD Id="RDK:7653" Name="AltezzaPiano" Type="integer" />
+					<FIELD Id="RDK:7654" Name="LunghezzaPiano" Type="integer" />
+					<FIELD Id="RDK:7655" Name="Treni" Type="TrenoType[]" />
+				</TYPE>
+				<TYPE Id="RDK:7663" Name="CampataUserDataType" SubType="structure">
+					<TYPE_VALUES />
+					<FIELD Id="RDK:7657" Name="Altezza" Type="integer" />
+					<FIELD Id="RDK:7658" Name="Livelli" Type="integer" />
+					<FIELD Id="RDK:7659" Name="AltezzeLivelli" Type="double[]" />
+					<FIELD Id="RDK:7660" Name="Lunghezza" Type="integer" />
+					<FIELD Id="RDK:7661" Name="Profondita" Type="integer" />
+					<FIELD Id="RDK:7662" Name="start_p" Type="PointType" />
+				</TYPE>
+				<TYPE Id="RDK:7619" Name="PointType" SubType="structure">
+					<TYPE_VALUES />
+					<FIELD Id="RDK:7616" Name="x" Type="double" />
+					<FIELD Id="RDK:7617" Name="y" Type="double" />
+					<FIELD Id="RDK:7618" Name="z" Type="double" />
+				</TYPE>
+			</GROUP>
 		</GROUP>
 		<GROUP Id="RDK:0004" Name="Parameters" SubType="ParameterDefs" Expanded="True" />
 		<GROUP Id="RDK:0005" Name="Global Variables" SubType="VarSet" IncludeDate="0" Expanded="True">
 			<VAR Id="RDK:5934" Name="Annotations2D_3D_Data" Type="Annotations2D_3DType" Expanded="True" />
 			<VAR Id="RDK:6638" Name="data_to_print" Type="string" Expanded="True" />
+			<VAR Id="RDK:7667" Name="layout" Type="LayoutSmart" Expanded="True" />
+			<VAR Id="RDK:8400" Name="Annotazioni" Type="AnnotationType[]" Expanded="True" />
 		</GROUP>
 		<GROUP Id="RDK:0006" Name="Profiles" SubType="ProfileSet" Expanded="True">
 			<PROFILE Id="RDK:7516" Name="Annotations2D_3DProfile" TypeName="Annotations2D_3DType" Expanded="True" />
@@ -63,18 +132,40 @@
 			</PAR>
 			<PAR Name="Recursive" />
 		</ACTION_CALL>
-		<SET_STRUCT Id="RDK:6539" VarRef="Annotations2D_3D_Data" ClearAll="True">
-			<PAR Name="LayoutData">
-				<EXP><![CDATA[$=$ReadTextFile("layout.json")]]></EXP>
+		<SET Id="RDK:7676" VarRef="layout">
+			<EXP><![CDATA[$=$FromJSON(ReadTextFile("new_layout.json"))]]></EXP>
+			<PAR Name="AdvancedOptions" />
+		</SET>
+		<SET Id="RDK:9597" VarRef="Annotazioni">
+			<EXP><![CDATA[$=$FromJSON(ReadTextFile("Annotazioni.json"))]]></EXP>
+			<PAR Name="AdvancedOptions" />
+		</SET>
+		<SET_STRUCT Id="RDK:7669" VarRef="Annotations2D_3D_Data" ClearAll="True">
+			<PAR Name="TreniData">
+				<EXP><![CDATA[$=$ToJSON(layout.Treni)]]></EXP>
 			</PAR>
 			<PAR Name="Annotations">
-				<EXP><![CDATA[$=$ReadTextFile("annotations.json")]]></EXP>
+				<EXP><![CDATA[$=$ToJSON(Annotazioni)]]></EXP>
 			</PAR>
-			<PAR Name="HPiano">
-				<EXP><![CDATA[$C$150000]]></EXP>
+			<PAR Name="AltezzaPiano">
+				<EXP><![CDATA[$=$layout.AltezzaPiano]]></EXP>
 			</PAR>
-			<PAR Name="LPiano">
-				<EXP><![CDATA[$C$150000]]></EXP>
+			<PAR Name="LunghezzaPiano">
+				<EXP><![CDATA[$=$layout.LunghezzaPiano]]></EXP>
+			</PAR>
+		</SET_STRUCT>
+		<SET_STRUCT Id="RDK:7678" VarRef="Annotations2D_3D_Data" ClearAll="True" Suppressed="True">
+			<PAR Name="TreniData">
+				<EXP><![CDATA[$=$ToJSON(layout.Treni)]]></EXP>
+			</PAR>
+			<PAR Name="Annotations">
+				<EXP><![CDATA[$=$"[]"]]></EXP>
+			</PAR>
+			<PAR Name="AltezzaPiano">
+				<EXP><![CDATA[$=$layout.AltezzaPiano]]></EXP>
+			</PAR>
+			<PAR Name="LunghezzaPiano">
+				<EXP><![CDATA[$=$layout.LunghezzaPiano]]></EXP>
 			</PAR>
 		</SET_STRUCT>
 		<ACTION_CALL Id="RDK:12" Name="RDEngineering_RemoteWebForm" DesignTimeRemark="{template File}">
@@ -118,8 +209,12 @@
 				<EXP><![CDATA[$C$(TOPBUTTONS)]]></EXP>
 			</PAR>
 		</ACTION_CALL>
+		<SET Id="RDK:8401" VarRef="Annotazioni">
+			<EXP><![CDATA[$=$FromJSON(Annotations2D_3D_Data.Annotations)]]></EXP>
+			<PAR Name="AdvancedOptions" />
+		</SET>
 		<SET Id="RDK:7074" VarRef="data_to_print">
-			<EXP><![CDATA[$=$ToJSON(Annotations2D_3D_Data.Annotations)]]></EXP>
+			<EXP><![CDATA[$=$ToJSON(Annotazioni)]]></EXP>
 			<PAR Name="AdvancedOptions" />
 		</SET>
 		<ACTION_CALL Id="RDK:7075" Name="RDEngineering_AppendTextLine">
@@ -127,7 +222,7 @@
 				<EXP><![CDATA[$C$RDEngineering_FILE_TEXT]]></EXP>
 			</PAR>
 			<PAR Name="FileName">
-				<EXP><![CDATA[$C$Risultato/Info.txt]]></EXP>
+				<EXP><![CDATA[$C$Annotazioni.json]]></EXP>
 			</PAR>
 			<PAR Name="TextLine">
 				<EXP><![CDATA[$=$data_to_print]]></EXP>
