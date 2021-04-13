@@ -143,7 +143,7 @@ function mainAnnotations2D_3D(){
 				camp.children.forEach(obj =>{
 					if(obj.name=="Testo") {	
 						var scaleVector = new THREE.Vector3();
-						var scale = scaleVector.subVectors(camp.position, camera.position).length() / scaleFactor;
+						var scale = scaleVector.subVectors(camp.position, camera2D.position).length() / scaleFactor;
 						if (scale<min_scale){
 							min_scale = scale;
 						}
