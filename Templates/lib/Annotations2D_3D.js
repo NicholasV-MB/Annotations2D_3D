@@ -135,12 +135,26 @@ function mainAnnotations2D_3D(){
 		camera2D.position.setZ(controls2D.target.z);
 		controls2D.update();
 		stats2D.update();
-		// Setta la grandezza del font della scritta all'interno delle campate in base allo zoom (TODO da migliorare)
-		if(all_campate.length>0 ){
+		// Setta la grandezza della sprite con la scritta all'interno delle campate in base allo zoom
+		var scaleFactor = 10;
+		var min_scale = Infinity;
+		if( all_campate.length>0 ){
 			all_campate.forEach( camp =>{
 				camp.children.forEach(obj =>{
 					if(obj.name=="Testo") {	
-						obj.fontSize = 35/camera2D.zoom;
+						var scaleVector = new THREE.Vector3();
+						var scale = scaleVector.subVectors(camp.position, camera.position).length() / scaleFactor;
+						if (scale<min_scale){
+							min_scale = scale;
+						}
+					}
+				});
+			});
+			all_campate.forEach( camp =>{
+				camp.children.forEach(obj =>{
+					if(obj.name=="Testo") {	
+						obj.scale.set(min_scale, min_scale, 1);
+						obj.position.set(0, 0, 4000);
 					}
 				});
 			});
@@ -341,15 +355,20 @@ function mainAnnotations2D_3D(){
 
 	// Crea testo
 	function createSprite(name){
-		var sprite = new THREE.TextSprite({
-			text:  name,
-			fontFamily: 'Arial, Helvetica, sans-serif',
-			fontSize: 100, //+ (10/camera2D.zoom),
-			color: '#000000',
-			
-		});
-		sprite.name="Testo";
-		sprite.position.setY(camera2D.position.y-10000);
+		var canvas = document.createElement('canvas');
+		canvas.width = 256;
+		canvas.height = 256;
+		var ctx = canvas.getContext("2d");
+		ctx.font = "44pt Arial";
+		ctx.fillStyle = "Black";
+		ctx.textAlign = "center";
+		ctx.fillText(name, 128, 44);
+		var tex = new THREE.Texture(canvas);
+		tex.needsUpdate = true;
+		var spriteMat = new THREE.SpriteMaterial({map: tex});
+		var sprite = new THREE.Sprite(spriteMat);
+		sprite.name = "Testo";
+		sprite.renderOrder=3;
 		return sprite;
 	}
 
