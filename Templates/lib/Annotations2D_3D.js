@@ -43,7 +43,7 @@ function mainAnnotations2D_3D(){
 	var add_annotation_mode = false;
 	var colors = {
 		"Verde": 0x00ff00,
-		"Ocra": 0xaea04b,
+		"Ocra": 0xDAA520, //0xaea04b,
 		"Rosso": 0xff0000
 	}
 	// settings della gui
@@ -154,7 +154,7 @@ function mainAnnotations2D_3D(){
 				camp.children.forEach(obj =>{
 					if(obj.name=="Testo") {	
 						obj.scale.set(min_scale, min_scale, 1);
-						obj.position.set(0, 0, 4000);
+						obj.position.set(0, 0, 3750);
 					}
 				});
 			});
@@ -436,10 +436,29 @@ function mainAnnotations2D_3D(){
 			}
 		});
 		if (campata_selected !== undefined){
+			var color_line = 0xff0000;
+			var radius = Math.sqrt( Math.pow(campata_selected.boundingBox.halfSize.x, 2) + Math.pow(campata_selected.boundingBox.halfSize.z, 2)	);
+			// COLORAZIONE COME IN SMART EDITOR
 			var geom = geom_from_obb(campata_selected.boundingBox);
-			var helper = new THREE.Line(geom, new THREE.LineBasicMaterial({color: 0xff0000}));
+			var helper = new THREE.Line(geom, new THREE.LineBasicMaterial({ color: color_line}));
 			helper.name = "Helper";
 			helper.renderOrder=2;
+			train_selected.add(helper);
+			
+			
+			// EVIDENZIA CAMPATA SELECTED CON CERCHIO
+			var curve = new THREE.EllipseCurve(0,  0, radius, radius);
+			var points = curve.getPoints( 50 );
+			var geom = new THREE.BufferGeometry().setFromPoints( points );
+
+			var helper = new THREE.Line(geom, new THREE.LineBasicMaterial({ color: color_line}));
+			helper.name = "Helper";
+			helper.renderOrder=2;
+			
+			// serve solo nel caso del cerchio 
+			helper.rotation.x = Math.PI / 2;
+			helper.position.set(campata_selected.position.x, campata_selected.position.y, campata_selected.position.z);
+			
 			train_selected.add(helper);
 		}
 	}
@@ -941,7 +960,7 @@ function mainAnnotations2D_3D(){
 			}
 		});
 		if(ex_ann2D==undefined){
-			var g = new THREE.BoxGeometry(campata_selected.boundingBox.halfSize.x*2, 0, campata_selected.boundingBox.halfSize.z*2 );
+			var g = new THREE.BoxGeometry(campata_selected.boundingBox.halfSize.x*1.97, 0, campata_selected.boundingBox.halfSize.z*1.95 );
 			var ann2D = new THREE.Mesh( g, material );
 			ann2D.name="Annotazione";
 			ann2D.rotation.y=train_selected.userData.Rotazione*Math.PI/180;
